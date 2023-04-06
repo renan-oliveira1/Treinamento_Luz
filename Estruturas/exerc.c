@@ -96,7 +96,7 @@ int deleteElement(LIST* list, int value){
     return 1;
 }
 
-void rebootList(LIST* list){
+void cleanList(LIST* list){
     PONT end = list->start;
     while(end!=NULL){
         PONT delete = end;
@@ -107,7 +107,5 @@ void rebootList(LIST* list){
 }
 
 int main(){
-    LIST list;
-    inicializeList(&list);
 
 }
