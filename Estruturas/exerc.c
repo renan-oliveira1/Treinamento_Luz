@@ -54,6 +54,16 @@ PONT searchSequentialOrd(LIST* list, int value){
     return NULL;
 }
 
-void insert(LIST* list, int value){
-    
+PONT searchSpotToInsert(LIST* list, int value, PONT* ant){
+    *ant = NULL;
+    PONT current = list->start;
+    while(current!=NULL && current->value < value){
+        *ant = current;
+        current = current->prox;
+    }
+    if( current != NULL && current->value == value )
+        return current;
+    return NULL;
+
+    //retorna null se for maior, retorna o ponteiro do elemento (caso for um array vazio retorn null)
 }
