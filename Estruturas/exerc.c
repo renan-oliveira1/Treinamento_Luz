@@ -36,64 +36,58 @@ void showList(LIST* list){
         end = end->prox;
     }
     printf("\n");
+    printf("\n");
 }
 
-PONT searchSequential(LIST* list, int value){
-    PONT element = list->start;
-    while(element!=NULL){
-        if(element->value) return element;
-        element = element->prox;
-    }
-    return NULL;
-}
 
-PONT searchSequentialOrd(LIST* list, int value){
-    PONT element = list->start;
-    while(element != NULL && element<value) element = element->prox;
-    if(element != NULL && element->value == value) return element;
-    return NULL;
-}
 
-PONT searchSpotToInsert(LIST* list, int value, PONT* ant){
-    *ant = NULL;
-    PONT current = list->start;
-    while(current!=NULL && current->value < value){
-        *ant = current;
+
+void insert(LIST* list, int value){
+
+    PONT newValue = malloc(sizeof(ELEMENT));
+    newValue->value = value;
+    newValue->prox = NULL;
+    
+    if(list == NULL)
+        list->start = newValue;
+
+    
+    PONT current= list->start;
+    PONT previous = NULL;
+    while (current != NULL && current->value < value)
+    {   
+        previous = current;
         current = current->prox;
     }
-    if( current != NULL && current->value == value )
-        return current;
-    return NULL;
-
-    //retorna null se for maior, retorna o ponteiro do elemento (caso for um array vazio retorn null)
-}
-
-
-int insert(LIST* list, PONT element){
-    int value = element->value;
-    PONT previous, i;
-    i = searchSpotToInsert(list, value, &previous);
-    if(i != NULL) return 0;
-    i = (PONT) malloc(sizeof(ELEMENT));
-    i->value = value;
     if(previous == NULL){
-        i->prox = list->start;
-        list->start = i;
+        list->start = newValue;
+        newValue->prox = current;
     }else{
-        i->prox = previous->prox;
-        previous->prox = i;
+        previous->prox = newValue;
+        newValue->prox = current;
     }
-    return 1;
+    
 }
 
-int deleteElement(LIST* list, int value){
-    PONT previous, i;
-    i = searchSpotToInsert(list, value, &previous);
-    if(i==NULL) return 0;
-    if(previous==NULL) list->start = i->prox;
-    else previous->prox = i->prox;
-    free(i);
-    return 1;
+void deleteElement(LIST* list, int value){
+    PONT current= list->start;
+    PONT delete = NULL;
+    PONT previous = NULL;
+    while (current != NULL && current->value<value)
+    {   
+        previous = current;
+        current = current->prox;
+    }
+    if( current->value== value){
+        delete = current;
+        current = current->prox;
+        previous-> prox = current;
+        free(delete);
+        printf("Element deleted!!\n");
+    }else{
+        printf("Elemento not found!!\n");
+    }
+    
 }
 
 void cleanList(LIST* list){
@@ -106,6 +100,66 @@ void cleanList(LIST* list){
     list->start = NULL;
 }
 
+void menu(){
+    printf("Digite sua escolha:\n"
+            " 1- Insert a element\n"
+            " 2- Delete a element\n"
+            " 3- Showlist\n"
+            " 4- Clean list\n"
+            " 0- Exit\n");
+}
+
 int main(){
 
+    LIST list;
+    inicializeList(&list);
+
+    int option = -1;
+    int value = 0;
+
+    while(option!=0){
+        menu();
+        printf("Escolha: ");
+        scanf("%d", &option);
+
+        switch (option)
+        {
+        case 1:
+            printf("Digite um numero inteiro: ");
+            scanf("\n%d", &value);
+            insert(&list, value);
+            printf("\n");
+            break;
+
+        case 2:
+            if(list.start == NULL){
+                printf("\nLista vazia \n");
+                break;
+            }
+            printf("Digite um numero que deseja deletar: ");
+            scanf("\n%d", &value);
+            deleteElement(&list, value);
+            printf("\n");
+            break;
+
+        case 3:
+            if(list.start == NULL)
+                printf("\nLista vazia \n");
+            showList(&list);
+            
+            break;
+
+        case 4:
+            cleanList(&list);
+            
+            break;
+        
+        default:
+            printf("Opcao invalida.\n\n");
+            menu();
+            break;
+        }
+    }
+
+    return 0;
 }
