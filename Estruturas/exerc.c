@@ -73,11 +73,20 @@ void deleteElement(LIST* list, int value){
     PONT current= list->start;
     PONT delete = NULL;
     PONT previous = NULL;
+
+    if(value== current->value){
+        delete = current;
+        list->start = current->prox;
+        free(delete);
+        return;
+    }
+
     while (current != NULL && current->value<value)
     {   
         previous = current;
         current = current->prox;
     }
+    
     if( current->value== value){
         delete = current;
         current = current->prox;
