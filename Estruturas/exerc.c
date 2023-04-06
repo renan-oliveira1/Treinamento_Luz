@@ -67,3 +67,47 @@ PONT searchSpotToInsert(LIST* list, int value, PONT* ant){
 
     //retorna null se for maior, retorna o ponteiro do elemento (caso for um array vazio retorn null)
 }
+
+
+int insert(LIST* list, PONT element){
+    int value = element->value;
+    PONT previous, i;
+    i = searchSpotToInsert(list, value, &previous);
+    if(i != NULL) return 0;
+    i = (PONT) malloc(sizeof(ELEMENT));
+    i->value = value;
+    if(previous == NULL){
+        i->prox = list->start;
+        list->start = i;
+    }else{
+        i->prox = previous->prox;
+        previous->prox = i;
+    }
+    return 1;
+}
+
+int deleteElement(LIST* list, int value){
+    PONT previous, i;
+    i = searchSpotToInsert(list, value, &previous);
+    if(i==NULL) return 0;
+    if(previous==NULL) list->start = i->prox;
+    else previous->prox = i->prox;
+    free(i);
+    return 1;
+}
+
+void rebootList(LIST* list){
+    PONT end = list->start;
+    while(end!=NULL){
+        PONT delete = end;
+        end = end->prox;
+        free(delete);
+    }
+    list->start = NULL;
+}
+
+int main(){
+    LIST list;
+    inicializeList(&list);
+
+}
