@@ -40,8 +40,6 @@ void showList(LIST* list){
 }
 
 
-
-
 void insert(LIST* list, int value){
 
     PONT newValue = malloc(sizeof(ELEMENT));
