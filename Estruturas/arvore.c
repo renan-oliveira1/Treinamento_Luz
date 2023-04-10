@@ -32,12 +32,12 @@ PONT insert(PONT root, PONT no){
 
 int search(PONT root, int value){
     if(root == NULL) return 0;
-    if(root->value == value) return 1;
+    if(root->value == value) return value;
     if(root->value > value) search(root->left, value);
     else search(root->right, value);
 }
 
-void seachElement(PONT root, int value){
+void searchElement(PONT root, int value){
     int found;
     found = search(root, value);
     if(found == 0) printf("\n Element %d not found!!\n", value);
@@ -45,11 +45,20 @@ void seachElement(PONT root, int value){
 
 }
 
+int numbersElements(PONT root){
+    if(root == NULL) return 0;
+    return numbersElements(root->left)
+        + 1
+        + numbersElements(root->right);
+}
+
+
 
 void menu(){
     printf("Digite sua escolha:\n"
             " 1- Insert\n"
             " 2- Search\n"
+            " 3- Numbers of elements\n"
             " 0- Exit\n");
 }
 
@@ -70,6 +79,7 @@ int main(){
         case 1:
             printf("Digite a inserir: ");
             scanf("\n%d", &value);
+        
             PONT newValue = createNo(value);
             head = insert(head, newValue);
             printf("\n");
@@ -77,8 +87,13 @@ int main(){
         case 2:
             printf("Digite a procurar: ");
             scanf("\n%d", &value);
-            seachElement(head, value);
+            searchElement(head, value);
             printf("\n");
+            break;
+
+        case 3:
+            
+            printf("\n Numero de elementos: %d\n", numbersElements(head));
             break;
         
         default:
