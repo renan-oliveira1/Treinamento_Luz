@@ -53,12 +53,55 @@ int numbersElements(PONT root){
 }
 
 
+PONT searchNo(PONT root, int value, PONT *father){
+    PONT current = root;
+    *father = NULL;
+    while(current){
+        if(current->value == value) return current;
+        *father = current;
+        if(value < current->value) current = current->left;
+        else current = current->right;
+    }
+    return NULL;
+}
+
+PONT removeElement(PONT root, int value){
+    PONT father, no, p , q;
+    no = searchNo(root, value, &father);
+    if(no == NULL) return root;
+    if(!no->left || !no->right){
+        if(!no->left) q = no->right;
+        else q = no->left;
+    }
+    else{
+        p = no;
+        q = no->left;
+        while(q->right){
+            p = q;
+            q = q->right;
+        }
+        if(p!=no){
+            p->right = q->left;
+            q->left = no->left;
+        }
+        q->right = no->right;
+    }
+    if(!father){
+        free(no);
+        return q;
+    }
+    if(value < father->value) father->left = q;
+    else father->right = q;
+    free(no);
+    return root;
+}
 
 void menu(){
     printf("Digite sua escolha:\n"
             " 1- Insert\n"
             " 2- Search\n"
             " 3- Numbers of elements\n"
+            " 4- Remove\n"
             " 0- Exit\n");
 }
 
@@ -94,6 +137,13 @@ int main(){
         case 3:
             
             printf("\n Numero de elementos: %d\n", numbersElements(head));
+            break;
+
+        case 4:
+            printf("Digite a inserir: ");
+            scanf("\n%d", &value);
+        
+            head = removeElement(head, value);
             break;
         
         default:
