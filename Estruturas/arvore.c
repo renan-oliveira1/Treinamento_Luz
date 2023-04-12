@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//obs: dar enfase remover da arvore
 
 typedef struct aux{
     int value;
@@ -52,7 +53,6 @@ int numbersElements(PONT root){
         + numbersElements(root->right);
 }
 
-
 PONT searchNo(PONT root, int value, PONT *father){
     PONT current = root;
     *father = NULL;
@@ -68,14 +68,22 @@ PONT searchNo(PONT root, int value, PONT *father){
 PONT removeElement(PONT root, int value){
     PONT father, no, p , q;
     no = searchNo(root, value, &father);
-    if(no == NULL) return root;
+    if(no == NULL){
+        printf("\nElemento não encontrado\n");
+        return root;
+    }
+    //quantos decendentes se sim só junta o elemento ao pai
+
     if(!no->left || !no->right){
         if(!no->left) q = no->right;
         else q = no->left;
     }
+    //tem descendentes
     else{
         p = no;
         q = no->left;
+
+        //percorrer ate a folha, sem filho na direira p-> pai q
         while(q->right){
             p = q;
             q = q->right;
@@ -96,6 +104,32 @@ PONT removeElement(PONT root, int value){
     return root;
 }
 
+// PONT removeElement(PONT root, int value){
+
+//     if(root == NULL){
+//         printf("Elemento não encontrado");
+//         return root;
+//     }
+    
+//     if(root->value > value)
+//         root->left = removeElement(root->left, value);
+//     else if(root->value < value)
+//         root->right = removeElement(root->right, value);
+//     else{
+//         if (root->left == NULL) {
+//             PONT temp = root->right;
+//             free(root);
+//             return temp;
+//         } else if (root->right == NULL) {
+//             PONT temp = root->left;
+//             free(root);
+//             return temp;
+//         }
+//     }
+
+//     return root;
+// }
+
 void menu(){
     printf("Digite sua escolha:\n"
             " 1- Insert\n"
@@ -103,6 +137,14 @@ void menu(){
             " 3- Numbers of elements\n"
             " 4- Remove\n"
             " 0- Exit\n");
+}
+void printInorder(PONT node) {
+    if (node == NULL) {
+        return;
+    }
+    printInorder(node->left);
+    printf("%d ", node->value);
+    printInorder(node->right);
 }
 
 int main(){
@@ -135,12 +177,11 @@ int main(){
             break;
 
         case 3:
-            
             printf("\n Numero de elementos: %d\n", numbersElements(head));
             break;
 
         case 4:
-            printf("Digite a inserir: ");
+            printf("Digite o numero que deseja remover: ");
             scanf("\n%d", &value);
         
             head = removeElement(head, value);

@@ -39,15 +39,23 @@ void showList(LIST* list){
     printf("\n");
 }
 
-
-void insert(LIST* list, int value){
-
+PONT createPont(int value){
     PONT newValue = malloc(sizeof(ELEMENT));
     newValue->value = value;
     newValue->prox = NULL;
-    
-    if(list == NULL)
-        list->start = newValue;
+    return newValue;
+}
+
+void insert(LIST* list, int value){
+
+    PONT newValue = createPont(value);
+
+    if(!newValue)
+        return;    
+    // if(list == NULL){
+    //     printf("BLABLABLABLALBALBLABLALBLABLALBL");
+    //     list->start = newValue;
+    // }
 
     
     PONT current= list->start;
