@@ -96,7 +96,7 @@ void deleteElement(LIST* list, int value){
     if( current->value== value){
         delete = current;
         current = current->prox;
-        previous-> prox = current;
+        previous->prox = current;
         free(delete);
         printf("Element deleted!!\n");
     }else{

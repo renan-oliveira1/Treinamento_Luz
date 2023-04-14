@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define SIZE 10000000
+#define SIZE 100000
 int *createArray(int size);
 
 void bubblesort(int list[], int n)
